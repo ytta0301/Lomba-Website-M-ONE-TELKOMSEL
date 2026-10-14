@@ -47,10 +47,9 @@ $level_colors = [
         <?php endforeach; ?>
     </div>
 
-    <!-- Info Cara Dapat Poin (Hanya muncul jika di halaman utama materi) -->
-    <?php if (!$level_filter): ?>
+    <!-- Info Cara Dapat Poin -->
     <div class="mb-10 bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-3xl p-6 text-center shadow-sm">
-        <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 text-sm font-bold text-gray-700">
+        <div class="flex flex-wrap items-center justify-center gap-4 md:gap-6 text-sm font-bold text-gray-700">
             <div class="flex items-center gap-2">
                 <span class="text-2xl">💡</span> <span class="uppercase tracking-wide text-xs text-gray-500">Cara Dapat Poin:</span>
             </div>
@@ -65,7 +64,6 @@ $level_colors = [
             </div>
         </div>
     </div>
-    <?php endif; ?>
 
     <!-- Grid Kartu Materi -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

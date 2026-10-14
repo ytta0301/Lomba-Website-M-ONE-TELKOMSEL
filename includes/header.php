@@ -15,7 +15,7 @@ if (isLoggedIn()) {
     $user_data = $conn->query("SELECT nama, poin, avatar FROM users WHERE id = $uid")->fetch_assoc();
     $user_poin = $user_data['poin'];
     $user_nama = $user_data['nama'];
-    $user_avatar = $user_data['avatar'];
+    $user_avatar = renderAvatar($user_data['avatar']); // ⭐ PENTING: pakai renderAvatar()
 }
 ?>
 <!DOCTYPE html>
@@ -77,15 +77,30 @@ if (isLoggedIn()) {
         <!-- Auth Buttons -->
         <div class="flex items-center gap-2">
             <?php if (isLoggedIn()): ?>
-                <div class="flex items-center gap-2 bg-yellow-50 border-2 border-yellow-300 rounded-full px-3 py-1">
-                    <span class="text-xl"><?= $user_avatar ?></span>
-                    <span class="text-sm font-bold text-gray-700 hidden sm:block"><?= htmlspecialchars(explode(' ', $user_nama)[0]) ?></span>
-                    <span class="text-sm font-bold text-yellow-600">⭐ <?= $user_poin ?></span>
-                </div>
+
+                <?php if (in_array(strtolower((string) ($_SESSION['user_role'] ?? '')), ['guru', 'admin'], true)): ?>
+                    <div class="flex items-center gap-2 bg-gray-100 border-2 border-gray-300 rounded-full px-3 py-1">
+                        <span class="text-xl">👨‍🏫</span>
+                        <span class="text-sm font-bold text-gray-700 hidden sm:block">Admin</span>
+                    </div>
+                <?php else: ?>
+                    <!-- ⭐ AVATAR DI NAVBAR (overflow-hidden agar aman) -->
+                    <div class="flex items-center gap-2 bg-yellow-50 border-2 border-yellow-300 rounded-full px-3 py-1">
+                        <span class="w-6 h-6 rounded-full overflow-hidden inline-flex items-center justify-center flex-shrink-0"><?= $user_avatar ?></span>
+                        <span class="text-sm font-bold text-gray-700 hidden sm:block"><?= htmlspecialchars(explode(' ', $user_nama)[0]) ?></span>
+                        <span class="text-sm font-bold text-yellow-600">⭐ <?= $user_poin ?></span>
+                    </div>
+                <?php endif; ?>
+
                 <a href="<?= str_repeat('../', substr_count($_SERVER['PHP_SELF'], '/') - 2) ?>pages/<?= in_array(strtolower((string) ($_SESSION['user_role'] ?? '')), ['guru', 'admin'], true) ? 'guru.php' : 'dashboard.php' ?>"
                    class="btn-primary hidden sm:block"><?= in_array(strtolower((string) ($_SESSION['user_role'] ?? '')), ['guru', 'admin'], true) ? 'Panel Guru' : 'Dashboard' ?></a>
+
+                <a href="<?= str_repeat('../', substr_count($_SERVER['PHP_SELF'], '/') - 2) ?>pages/profile.php"
+                   class="bg-white border-2 border-gray-200 hover:bg-gray-100 hover:border-gray-300 text-xl rounded-full w-10 h-10 flex items-center justify-center transition-all shadow-sm" title="Edit Profil">⚙️</a>
+
                 <a href="<?= str_repeat('../', substr_count($_SERVER['PHP_SELF'], '/') - 2) ?>pages/logout.php"
                    class="btn-outline text-sm">Keluar</a>
+
             <?php else: ?>
                 <a href="<?= str_repeat('../', substr_count($_SERVER['PHP_SELF'], '/') - 2) ?>pages/login.php"
                    class="btn-outline">Masuk</a>

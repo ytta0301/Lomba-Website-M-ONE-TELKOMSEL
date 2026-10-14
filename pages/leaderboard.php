@@ -95,12 +95,14 @@ if (isLoggedIn() && $_SESSION['user_role'] === 'siswa') {
                 <div class="absolute -top-8 text-2xl animate-bounce-slow">✨</div>
             <?php endif; ?>
 
-            <div class="<?= $avatar_size ?> mb-2 drop-shadow-md animate-float" style="animation-delay: <?= $idx*0.2 ?>s"><?= $u['avatar'] ?></div>
+            <div class="<?= $avatar_size ?> mb-2 drop-shadow-md animate-float" style="animation-delay: <?= $idx*0.2 ?>s"><?= renderAvatar($u['avatar'], '2.5rem') ?></div>
             <div class="text-3xl sm:text-4xl absolute -top-4 sm:-top-6 right-0 drop-shadow-sm z-20"><?= $rank_icons[$idx] ?></div>
             
             <!-- Nama & Poin di atas balok -->
             <div class="bg-white px-3 py-1.5 rounded-xl shadow-sm border border-gray-100 mb-3 text-center min-w-[80px] sm:min-w-[100px] relative z-20">
-                <div class="font-black text-gray-800 text-xs sm:text-sm truncate max-w-[80px] sm:max-w-[100px]"><?= htmlspecialchars(explode(' ',$u['nama'])[0]) ?></div>
+                <div class="font-black text-gray-800 text-xs sm:text-sm truncate max-w-[80px] sm:max-w-[100px]">
+                    <?= htmlspecialchars(mb_strimwidth(explode(' ', $u['nama'])[0], 0, 12, '…')) ?>
+                </div>
                 <div class="font-black <?= $text_color ?> text-xs">⭐<?= number_format($u['poin']) ?></div>
             </div>
             
@@ -143,7 +145,7 @@ if (isLoggedIn() && $_SESSION['user_role'] === 'siswa') {
                     $rank_display = "<span class='text-3xl drop-shadow-sm'>🥉</span>";
                 }
             ?>
-            <div class="flex items-center px-4 md:px-6 py-4 <?= $bg_row ?> transition-colors hover:bg-gray-50 group">
+            <div class="flex items-center px-4 md:px-6 py-4 <?= $bg_row ?> transition-colors hover:bg-gray-50 group overflow-hidden">
                 
                 <!-- Rank -->
                 <div class="w-12 md:w-16 text-center font-black text-lg flex-shrink-0">
@@ -151,18 +153,22 @@ if (isLoggedIn() && $_SESSION['user_role'] === 'siswa') {
                 </div>
                 
                 <!-- Avatar & Nama -->
-                <div class="flex-1 flex items-center gap-4 pl-2 md:pl-4 min-w-0">
+                <div class="flex-1 flex items-center gap-4 pl-2 md:pl-4 min-w-0 overflow-hidden">
                     <div class="text-3xl w-12 h-12 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                        <?= $u['avatar'] ?>
+                        <?= renderAvatar($u['avatar'], '2.2rem') ?>
                     </div>
-                    <div class="min-w-0">
-                        <div class="font-black text-gray-800 text-base md:text-lg truncate flex items-center gap-2">
-                            <?= htmlspecialchars($u['nama']) ?>
+                    <div class="min-w-0 overflow-hidden">
+                        <div class="font-black text-gray-800 text-base md:text-lg flex items-center gap-2 min-w-0 overflow-hidden">
+                            <span class="truncate block max-w-full">
+                                <?= htmlspecialchars(mb_strimwidth($u['nama'], 0, 22, '…')) ?>
+                            </span>
                             <?php if ($is_me): ?>
-                                <span class="bg-primary text-white text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full">Kamu</span>
+                                <span class="bg-primary text-white text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full flex-shrink-0">Kamu</span>
                             <?php endif; ?>
                         </div>
-                        <div class="text-xs text-gray-400 font-bold">@<?= htmlspecialchars($u['username']) ?></div>
+                        <div class="text-xs text-gray-400 font-bold truncate max-w-full">
+                            @<?= htmlspecialchars(mb_strimwidth($u['username'], 0, 18, '…')) ?>
+                        </div>
                     </div>
                 </div>
                 

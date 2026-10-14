@@ -162,7 +162,7 @@ $total_kuis = $conn->query("SELECT COUNT(*) as c FROM kuis")->fetch_assoc()['c']
             <?php else: while ($u = $top_users->fetch_assoc()): ?>
                 <div class="leaderboard-item rank-<?= $rank ?> animate-on-scroll">
                     <div class="text-3xl font-black w-10 text-center"><?= $rank_icons[$rank-1] ?></div>
-                    <div class="text-3xl"><?= $u['avatar'] ?></div>
+                    <div class="text-3xl"><?= renderAvatar($u['avatar'], '2.2rem') ?></div>
                     <div class="flex-1">
                         <div class="font-black text-gray-800"><?= htmlspecialchars($u['nama']) ?></div>
                     </div>

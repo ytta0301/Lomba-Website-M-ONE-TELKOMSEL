@@ -131,7 +131,7 @@ $aktivitas = $conn->query("
                                 <td class="p-4">
                                     <div class="flex items-center gap-3">
                                         <div class="text-2xl w-10 h-10 bg-white border border-gray-100 rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
-                                            <?= $s['avatar'] ?>
+                                            <?= renderAvatar($s['avatar'], '2rem') ?>
                                         </div>
                                         <div>
                                             <div class="font-black text-gray-800 text-sm"><?= htmlspecialchars($s['nama']) ?></div>
@@ -177,7 +177,7 @@ $aktivitas = $conn->query("
                         $bg = $persen >= 80 ? 'bg-green-50 border-green-100' : ($persen >= 50 ? 'bg-yellow-50 border-yellow-100' : 'bg-red-50 border-red-100');
                     ?>
                     <div class="flex gap-3 p-3 rounded-2xl border <?= $bg ?>">
-                        <div class="text-2xl flex-shrink-0"><?= $a['avatar'] ?></div>
+                        <div class="text-2xl flex-shrink-0"><?= renderAvatar($a['avatar'], '2rem') ?></div>
                         <div class="flex-1 min-w-0">
                             <div class="text-sm font-black text-gray-800 truncate"><?= htmlspecialchars($a['nama']) ?></div>
                             <div class="text-xs text-gray-600 truncate mt-0.5">Mengerjakan: <?= htmlspecialchars($a['judul']) ?></div>
