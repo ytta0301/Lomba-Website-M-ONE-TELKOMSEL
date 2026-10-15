@@ -3,12 +3,17 @@ $page_title = 'Beranda';
 require_once 'includes/header.php';
 
 // Ambil top 3 leaderboard
-$top_users = $conn->query("SELECT nama, poin, avatar FROM users WHERE role='siswa' ORDER BY poin DESC LIMIT 3");
+$top_users = ($db_connected && $conn) ? @$conn->query("SELECT nama, poin, avatar FROM users WHERE role='siswa' ORDER BY poin DESC LIMIT 3") : false;
 
 // Hitung statistik
-$total_siswa = $conn->query("SELECT COUNT(*) as c FROM users WHERE role='siswa'")->fetch_assoc()['c'];
-$total_materi = $conn->query("SELECT COUNT(*) as c FROM materi")->fetch_assoc()['c'];
-$total_kuis = $conn->query("SELECT COUNT(*) as c FROM kuis")->fetch_assoc()['c'];
+$total_siswa = 0;
+$total_materi = 0;
+$total_kuis = 0;
+if ($db_connected && $conn) {
+    if ($r = @$conn->query("SELECT COUNT(*) as c FROM users WHERE role='siswa'")) $total_siswa = (int)($r->fetch_assoc()['c'] ?? 0);
+    if ($r = @$conn->query("SELECT COUNT(*) as c FROM materi")) $total_materi = (int)($r->fetch_assoc()['c'] ?? 0);
+    if ($r = @$conn->query("SELECT COUNT(*) as c FROM kuis")) $total_kuis = (int)($r->fetch_assoc()['c'] ?? 0);
+}
 ?>
 
 <!-- HERO SECTION -->
@@ -152,8 +157,8 @@ $total_kuis = $conn->query("SELECT COUNT(*) as c FROM kuis")->fetch_assoc()['c']
             <?php
             $rank = 1;
             $rank_icons = ['🥇','🥈','🥉'];
-            $top_users = $conn->query("SELECT nama, poin, avatar FROM users WHERE role='siswa' ORDER BY poin DESC LIMIT 3");
-            if ($top_users->num_rows == 0): ?>
+            $top_users = ($db_connected && $conn) ? @$conn->query("SELECT nama, poin, avatar FROM users WHERE role='siswa' ORDER BY poin DESC LIMIT 3") : false;
+            if (!$top_users || $top_users->num_rows == 0): ?>
                 <div class="text-center text-gray-400 font-bold py-8">
                     <div class="text-5xl mb-3">🌟</div>
                     <p>Belum ada siswa. Jadilah yang pertama!</p>

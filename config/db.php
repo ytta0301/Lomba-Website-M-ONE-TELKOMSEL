@@ -13,13 +13,35 @@ $port = (int)(getenv('MYSQLPORT') ?: 3306);
 
 // Cegah PHP meledak jika database belum tersambung
 mysqli_report(MYSQLI_REPORT_OFF);
-$conn = @new mysqli($host, $user, $pass, $db, $port);
+$real_conn = @new mysqli($host, $user, $pass, $db, $port);
 
-if ($conn->connect_error) {
-    // Tampilkan pesan ramah jika DB belum ada, jangan biarkan Error 500
+class SafeResult {
+    public $num_rows = 0;
+    public function fetch_assoc() { return null; }
+    public function fetch_all($mode = null) { return []; }
+}
+
+class SafeStmt {
+    public function bind_param(...$args) { return true; }
+    public function execute() { return true; }
+    public function get_result() { return new SafeResult(); }
+    public function close() { return true; }
+}
+
+class SafeDB {
+    public $connect_error = null;
+    public $insert_id = 0;
+    public function query($sql) { return new SafeResult(); }
+    public function prepare($sql) { return new SafeStmt(); }
+    public function set_charset($charset) { return true; }
+}
+
+if ($real_conn->connect_error) {
     $db_connected = false;
+    $conn = new SafeDB();
 } else {
     $db_connected = true;
+    $conn = $real_conn;
     $conn->set_charset("utf8mb4");
 }
 
