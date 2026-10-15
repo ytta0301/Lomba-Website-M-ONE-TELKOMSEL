@@ -1,5 +1,6 @@
 <?php
 // includes/footer.php
+$root_prefix = (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) ? '../' : '';
 ?>
 <!-- FOOTER -->
 <footer class="bg-white border-t-4 border-primary mt-16">
@@ -23,10 +24,10 @@
             <div>
                 <h4 class="font-bold text-gray-700 mb-3">📌 Menu</h4>
                 <ul class="space-y-2 text-sm text-gray-500">
-                    <li><a href="../index.php" class="hover:text-primary">🏠 Beranda</a></li>
-                    <li><a href="../pages/materi.php" class="hover:text-primary">📚 Materi Belajar</a></li>
-                    <li><a href="../pages/leaderboard.php" class="hover:text-primary">🏆 Leaderboard</a></li>
-                    <li><a href="../pages/dashboard.php" class="hover:text-primary">📊 Dashboard</a></li>
+                    <li><a href="<?= $root_prefix ?>index.php" class="hover:text-primary">🏠 Beranda</a></li>
+                    <li><a href="<?= $root_prefix ?>pages/materi.php" class="hover:text-primary">📚 Materi Belajar</a></li>
+                    <li><a href="<?= $root_prefix ?>pages/leaderboard.php" class="hover:text-primary">🏆 Leaderboard</a></li>
+                    <li><a href="<?= $root_prefix ?>pages/dashboard.php" class="hover:text-primary">📊 Dashboard</a></li>
                 </ul>
             </div>
             <!-- Info -->
@@ -47,6 +48,6 @@
     </div>
 </footer>
 
-<script src="<?= str_repeat('../', substr_count($_SERVER['PHP_SELF'], '/') - 2) ?>assets/js/main.js"></script>
+<script src="<?= $root_prefix ?>assets/js/main.js"></script>
 </body>
 </html>

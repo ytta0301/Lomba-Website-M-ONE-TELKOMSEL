@@ -1,7 +1,19 @@
 <?php
 // config/db.php
-$conn = new mysqli('localhost', 'root', '', 'kodingkids');
-if ($conn->connect_error) die('Koneksi gagal: ' . $conn->connect_error);
+$db_host = getenv('DB_HOST') ?: 'localhost';
+$db_user = getenv('DB_USER') ?: 'root';
+$db_pass = getenv('DB_PASS') !== false ? getenv('DB_PASS') : '';
+$db_name = getenv('DB_NAME') ?: 'kodingkids';
+$db_port = getenv('DB_PORT') ? (int)getenv('DB_PORT') : 3306;
+
+$conn = @new mysqli($db_host, $db_user, $db_pass, $db_name, $db_port);
+if ($conn->connect_error) {
+    die('<div style="font-family:sans-serif;text-align:center;padding:50px;">
+        <h2>❌ Koneksi Database Gagal</h2>
+        <p>Pastikan database <strong>' . htmlspecialchars($db_name, ENT_QUOTES, 'UTF-8') . '</strong> di host <strong>' . htmlspecialchars($db_host, ENT_QUOTES, 'UTF-8') . '</strong> sudah berjalan.</p>
+        <p>Error: ' . htmlspecialchars($conn->connect_error, ENT_QUOTES, 'UTF-8') . '</p>
+    </div>');
+}
 $conn->set_charset("utf8mb4");
 
 function isLoggedIn() {
@@ -21,6 +33,17 @@ function clean($data) {
 function tambahPoin($user_id, $poin) {
     global $conn;
     $conn->query("UPDATE users SET poin = poin + $poin WHERE id = $user_id");
+
+    // Otomatis berikan badge jika poin mencukupi
+    $user = $conn->query("SELECT poin FROM users WHERE id = $user_id")->fetch_assoc();
+    if ($user) {
+        $badges = $conn->query("SELECT * FROM badges WHERE syarat_poin <= {$user['poin']}");
+        if ($badges) {
+            while ($badge = $badges->fetch_assoc()) {
+                $conn->query("INSERT IGNORE INTO user_badges (user_id, badge_id) VALUES ($user_id, {$badge['id']})");
+            }
+        }
+    }
 }
 
 // Render avatar: bisa emoji ATAU foto dari database
