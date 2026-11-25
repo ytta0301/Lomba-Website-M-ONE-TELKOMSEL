@@ -1,8 +1,13 @@
 <?php
 $page_title = 'Toko Poin';
-require_once '../includes/header.php';
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+require_once '../config/db.php';
 
 if (!isLoggedIn()) redirect('login.php');
+
+require_once '../includes/header.php';
 
 $uid = $_SESSION['user_id'];
 $user = $conn->query("SELECT * FROM users WHERE id=$uid")->fetch_assoc();
@@ -68,6 +73,23 @@ $items_border = $conn->query("SELECT * FROM toko_items WHERE kategori='border' O
 // Ambil equipped items
 $equipped = getEquippedItems($uid);
 
+// Ambil item yang pernah dibeli agar bisa dipasang kembali dari riwayat.
+$riwayat_stmt = $conn->prepare(
+    "SELECT ti.*, ui.aktif
+     FROM user_items ui
+     JOIN toko_items ti ON ui.item_id = ti.id
+     WHERE ui.user_id = ?
+     ORDER BY ti.kategori ASC, ti.nama ASC"
+);
+if (!$riwayat_stmt) {
+    throw new RuntimeException('Gagal menyiapkan riwayat item: ' . $conn->error);
+}
+$riwayat_stmt->bind_param("i", $uid);
+if (!$riwayat_stmt->execute()) {
+    throw new RuntimeException('Gagal mengambil riwayat item: ' . $riwayat_stmt->error);
+}
+$riwayat_items = $riwayat_stmt->get_result();
+
 // Refresh poin
 $user = $conn->query("SELECT * FROM users WHERE id=$uid")->fetch_assoc();
 ?>
@@ -120,6 +142,42 @@ $user = $conn->query("SELECT * FROM users WHERE id=$uid")->fetch_assoc();
         </div>
     </div>
     <?php endif; ?>
+
+    <!-- Riwayat dan koleksi item yang sudah dibeli -->
+    <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 mb-10">
+        <div class="mb-5">
+            <h2 class="font-black text-gray-800 text-xl flex items-center gap-2">📜 Riwayat Item Dibeli</h2>
+            <p class="text-gray-500 font-semibold text-sm mt-1">Item yang sudah dibeli tersimpan di sini dan bisa dipakai lagi kapan saja.</p>
+        </div>
+
+        <?php if ($riwayat_items->num_rows > 0): ?>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <?php while ($item = $riwayat_items->fetch_assoc()): ?>
+                    <div class="bg-purple-50 border border-purple-100 rounded-2xl p-4 flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-3xl flex-shrink-0">
+                            <?= htmlspecialchars($item['icon']) ?>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="text-[10px] font-black text-purple-500 uppercase tracking-wide"><?= htmlspecialchars($item['kategori']) ?></div>
+                            <div class="font-black text-gray-800 truncate"><?= htmlspecialchars($item['nama']) ?></div>
+                            <form method="POST" class="mt-2">
+                                <input type="hidden" name="item_id" value="<?= (int) $item['id'] ?>">
+                                <?php if ((int) $item['aktif'] === 1): ?>
+                                    <button name="unequip" class="text-xs font-black text-purple-700 hover:text-purple-900">✅ Sedang dipakai · Lepas</button>
+                                <?php else: ?>
+                                    <button name="equip" class="text-xs font-black text-green-700 hover:text-green-900">↻ Pakai lagi</button>
+                                <?php endif; ?>
+                            </form>
+                        </div>
+                    </div>
+                <?php endwhile; ?>
+            </div>
+        <?php else: ?>
+            <div class="bg-gray-50 rounded-2xl px-5 py-6 text-center text-gray-500 font-bold">
+                Kamu belum membeli item. Item yang dibeli nanti akan muncul di sini.
+            </div>
+        <?php endif; ?>
+    </div>
 
     <!-- ============ KATEGORI: AVATAR ============ -->
     <div class="mb-12">

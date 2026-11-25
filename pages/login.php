@@ -1,8 +1,14 @@
 <?php
 $page_title = 'Login';
-require_once '../includes/header.php';
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+require_once '../config/db.php';
 if (isLoggedIn()) {
     $current_role = strtolower((string) ($_SESSION['user_role'] ?? ''));
+    if ($current_role === 'kepsek') {
+        redirect('kelola_guru.php');
+    }
     redirect(in_array($current_role, ['guru', 'admin'], true) ? 'guru.php' : '../index.php');
 }
 
@@ -41,11 +47,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         // Guru dan admin langsung masuk ke panel guru.
         $role = strtolower((string) $user['role']);
+        if ($role === 'kepsek') {
+            redirect('kelola_guru.php');
+        }
         redirect(in_array($role, ['guru', 'admin'], true) ? 'guru.php' : 'dashboard.php');
     } else {
         $error = 'Username/email atau password salah!';
     }
 }
+require_once '../includes/header.php';
 ?>
 
 <div class="min-h-screen flex items-center justify-center px-4 py-16 bg-gradient-to-br from-purple-50 via-white to-blue-50">

@@ -3,7 +3,13 @@ $page_title = 'Kuis';
 require_once '../includes/header.php';
 
 $materi_id = isset($_GET['materi_id']) ? (int)$_GET['materi_id'] : 0;
-$materi = $conn->query("SELECT * FROM materi WHERE id=$materi_id")->fetch_assoc();
+$materi_stmt = $conn->prepare(
+    'SELECT m.*, u.nama AS pembuat_nama FROM materi m LEFT JOIN users u ON u.id = m.created_by WHERE m.id = ?'
+);
+$materi_stmt->bind_param('i', $materi_id);
+$materi_stmt->execute();
+$materi = $materi_stmt->get_result()->fetch_assoc();
+$materi_stmt->close();
 
 // Cek apakah materi ada
 if (!$materi) redirect('materi.php');
@@ -69,6 +75,9 @@ $opsi_labels = ['a'=>'A','b'=>'B','c'=>'C','d'=>'D'];
             <?= $materi['icon'] ?>
         </div>
         <h1 class="text-3xl md:text-4xl font-black text-gray-800 mb-2">Kuis: <?= htmlspecialchars($materi['judul']) ?></h1>
+        <p class="text-sm text-gray-500 font-semibold mb-4">
+            📝 Soal dibuat oleh: <span class="font-black text-gray-700"><?= htmlspecialchars($materi['pembuat_nama'] ?: 'Belum diketahui', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></span>
+        </p>
         <div class="inline-flex items-center gap-2 bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full font-bold text-sm">
             <span>🧩 <?= $total_soal ?> soal</span>
             <span class="text-yellow-400">•</span>
@@ -237,17 +246,17 @@ $opsi_labels = ['a'=>'A','b'=>'B','c'=>'C','d'=>'D'];
                 <?php foreach ($opsi_arr as $key => $val): ?>
                 <label class="group cursor-pointer relative">
                     <!-- Radio input tersembunyi, tapi fungsi tetap jalan -->
-                    <input type="radio" name="jawaban[<?= $s['id'] ?>]" value="<?= $key ?>" class="peer sr-only" required>
+                    <input type="radio" name="jawaban[<?= $s['id'] ?>]" value="<?= $key ?>" class="quiz-option-input peer sr-only" required>
                     
                     <!-- Desain kustom tombol pilihan -->
-                    <div class="flex items-center gap-3 p-4 rounded-xl border-2 border-gray-200 bg-white text-gray-600 font-bold transition-all peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary peer-checked:shadow-sm hover:border-gray-300 hover:bg-gray-50">
+                    <div class="quiz-option-card flex items-center gap-3 p-4 rounded-xl border-2 border-gray-200 bg-white text-gray-600 font-bold transition-all hover:border-gray-300 hover:bg-gray-50">
                         
-                        <!-- Lingkaran penanda -->
-                        <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center peer-checked:border-primary group-hover:border-primary/50 transition-colors">
-                            <div class="w-3 h-3 rounded-full bg-primary scale-0 peer-checked:scale-100 transition-transform"></div>
+                        <!-- Kotak centang hanya aktif setelah opsi dipilih -->
+                        <div class="quiz-option-indicator w-6 h-6 rounded-md border-2 border-gray-300 flex items-center justify-center transition-colors">
+                            <span class="quiz-option-check" aria-hidden="true">✓</span>
                         </div>
                         
-                        <span class="w-6 font-black opacity-50 peer-checked:opacity-100"><?= strtoupper($key) ?>.</span>
+                        <span class="quiz-option-label w-6 font-black opacity-50"><?= strtoupper($key) ?>.</span>
                         <span class="flex-1 text-[15px]"><?= htmlspecialchars($val) ?></span>
                     </div>
                 </label>

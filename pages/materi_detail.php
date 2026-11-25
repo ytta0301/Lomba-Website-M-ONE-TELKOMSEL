@@ -3,7 +3,13 @@ $page_title = 'Detail Materi';
 require_once '../includes/header.php';
 
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-$materi = $conn->query("SELECT * FROM materi WHERE id=$id")->fetch_assoc();
+$materi_stmt = $conn->prepare(
+    'SELECT m.*, u.nama AS pembuat_nama FROM materi m LEFT JOIN users u ON u.id = m.created_by WHERE m.id = ?'
+);
+$materi_stmt->bind_param('i', $id);
+$materi_stmt->execute();
+$materi = $materi_stmt->get_result()->fetch_assoc();
+$materi_stmt->close();
 
 // Jika materi tidak ditemukan, kembalikan ke daftar
 if (!$materi) { redirect('../pages/materi.php'); }
@@ -87,6 +93,9 @@ $level_colors = ['Mudah'=>'bg-green-100 text-green-700','Sedang'=>'bg-yellow-100
                             </div>
                             <h1 class="text-3xl md:text-4xl font-black text-gray-800 mb-2 leading-tight"><?= htmlspecialchars($materi['judul']) ?></h1>
                             <p class="text-gray-500 font-semibold text-base"><?= htmlspecialchars($materi['deskripsi']) ?></p>
+                            <p class="text-sm text-gray-500 font-semibold mt-2">
+                                👩‍🏫 Dibuat oleh: <span class="font-black text-gray-700"><?= htmlspecialchars($materi['pembuat_nama'] ?: 'Belum diketahui', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></span>
+                            </p>
                         </div>
                     </div>
                 </div>

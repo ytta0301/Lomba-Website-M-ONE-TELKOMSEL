@@ -1,8 +1,13 @@
 <?php
 $page_title = 'Edit Profil';
-require_once '../includes/header.php';
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+require_once '../config/db.php';
 
 if (!isLoggedIn()) redirect('login.php');
+
+require_once '../includes/header.php';
 
 $uid = $_SESSION['user_id'];
 $error = '';
@@ -117,9 +122,14 @@ $user = $stmt->get_result()->fetch_assoc();
 
                 <div class="flex flex-col sm:flex-row gap-4 items-center justify-between pt-6 border-t border-gray-100">
                     <a href="<?= ($_SESSION['user_role'] === 'admin') ? 'guru.php' : 'dashboard.php' ?>" class="text-gray-400 font-bold hover:text-gray-800 order-2 sm:order-1">← Kembali</a>
-                    <button type="submit" class="btn-primary px-8 py-3.5 text-lg w-full sm:w-auto order-1 sm:order-2 shadow-lg hover:scale-105 transition-transform flex items-center justify-center gap-2">
-                        💾 Simpan Profil
-                    </button>
+                    <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto order-1 sm:order-2">
+                        <button type="submit" class="btn-primary px-8 py-3.5 text-lg w-full sm:w-auto shadow-lg hover:scale-105 transition-transform flex items-center justify-center gap-2">
+                            💾 Simpan Profil
+                        </button>
+                        <a href="logout.php" class="btn-outline px-8 py-3.5 text-lg w-full sm:w-auto flex items-center justify-center gap-2">
+                            🚪 Keluar
+                        </a>
+                    </div>
                 </div>
             </form>
         </div>

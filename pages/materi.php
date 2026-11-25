@@ -2,12 +2,27 @@
 $page_title = 'Materi Belajar';
 require_once '../includes/header.php';
 
-// Fitur Filter Level
-$level_filter = isset($_GET['level']) ? clean($_GET['level']) : '';
-$where = $level_filter ? "WHERE level='$level_filter'" : '';
+$valid_levels = ['Mudah', 'Sedang', 'Sulit'];
+$requested_level = $_GET['level'] ?? '';
+$level_filter = is_string($requested_level) && in_array($requested_level, $valid_levels, true)
+    ? $requested_level
+    : '';
+$requested_search = $_GET['guru'] ?? '';
+$guru_search = is_string($requested_search) ? trim($requested_search) : '';
+$guru_search = mb_substr($guru_search, 0, 80);
+$guru_pattern = '%' . $guru_search . '%';
 
-// Ambil semua materi sesuai filter
-$materis = $conn->query("SELECT * FROM materi $where ORDER BY urutan");
+$materi_stmt = $conn->prepare(
+    "SELECT m.*, u.nama AS pembuat_nama
+     FROM materi m
+     LEFT JOIN users u ON u.id = m.created_by
+     WHERE (? = '' OR m.level = ?)
+       AND (? = '' OR u.nama LIKE ?)
+     ORDER BY m.urutan"
+);
+$materi_stmt->bind_param('ssss', $level_filter, $level_filter, $guru_search, $guru_pattern);
+$materi_stmt->execute();
+$materis = $materi_stmt->get_result();
 
 // Pengaturan warna untuk badge level
 $level_colors = [
@@ -37,15 +52,29 @@ $level_colors = [
     
     <!-- Filter Level -->
     <div class="flex flex-wrap gap-3 justify-center mb-12">
-        <a href="materi.php" class="px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-sm <?= !$level_filter ? 'bg-gray-800 text-white ring-2 ring-gray-800 ring-offset-2' : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-200' ?>">
+        <a href="materi.php<?= $guru_search !== '' ? '?guru=' . rawurlencode($guru_search) : '' ?>" class="px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-sm <?= !$level_filter ? 'bg-gray-800 text-white ring-2 ring-gray-800 ring-offset-2' : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-200' ?>">
             🌟 Semua Level
         </a>
         <?php foreach (['Mudah','Sedang','Sulit'] as $lvl): ?>
-        <a href="materi.php?level=<?= $lvl ?>" class="px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-sm flex items-center gap-2 <?= $level_filter==$lvl ? 'bg-gray-800 text-white ring-2 ring-gray-800 ring-offset-2' : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-200' ?>">
+        <a href="materi.php?level=<?= rawurlencode($lvl) ?><?= $guru_search !== '' ? '&guru=' . rawurlencode($guru_search) : '' ?>" class="px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-sm flex items-center gap-2 <?= $level_filter==$lvl ? 'bg-gray-800 text-white ring-2 ring-gray-800 ring-offset-2' : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-200' ?>">
             <span><?= $lvl=='Mudah'?'🟢':($lvl=='Sedang'?'🟡':'🔴') ?></span> <?= $lvl ?>
         </a>
         <?php endforeach; ?>
     </div>
+
+    <form method="GET" action="materi.php" class="max-w-2xl mx-auto mb-10">
+        <?php if ($level_filter !== ''): ?>
+        <input type="hidden" name="level" value="<?= htmlspecialchars($level_filter, ENT_QUOTES, 'UTF-8') ?>">
+        <?php endif; ?>
+        <label for="search-guru" class="block text-sm font-black text-gray-700 mb-2">Cari nama guru pembuat materi</label>
+        <div class="flex flex-col sm:flex-row gap-3">
+            <input id="search-guru" type="search" name="guru" value="<?= htmlspecialchars($guru_search, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" maxlength="80" class="form-input flex-1" placeholder="Contoh: Bu Ani atau Pak Budi">
+            <button type="submit" class="btn-primary px-6 py-3 flex items-center justify-center gap-2">🔎 Cari Guru</button>
+            <?php if ($guru_search !== ''): ?>
+            <a href="materi.php<?= $level_filter !== '' ? '?level=' . rawurlencode($level_filter) : '' ?>" class="btn-outline px-6 py-3 flex items-center justify-center">Hapus pencarian</a>
+            <?php endif; ?>
+        </div>
+    </form>
 
     <!-- Info Cara Dapat Poin -->
     <div class="mb-10 bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-3xl p-6 text-center shadow-sm">
@@ -72,7 +101,7 @@ $level_colors = [
             <div class="text-6xl mb-4 grayscale opacity-50">📭</div>
             <p class="font-bold text-xl text-gray-600">Yah, belum ada materi untuk level ini.</p>
             <p class="text-gray-400 mt-2">Coba pilih level yang lain ya!</p>
-            <a href="materi.php" class="btn-outline mt-6 inline-block">← Kembali ke Semua Level</a>
+            <a href="materi.php" class="btn-outline mt-6 inline-block">← Lihat Semua Materi</a>
         </div>
         <?php endif; ?>
 
@@ -120,6 +149,9 @@ $level_colors = [
             
             <p class="text-gray-500 text-sm font-semibold leading-relaxed mb-6 line-clamp-2">
                 <?= htmlspecialchars($m['deskripsi']) ?>
+            </p>
+            <p class="text-xs text-gray-500 font-semibold mb-4">
+                👩‍🏫 Dibuat oleh: <span class="font-black text-gray-700"><?= htmlspecialchars($m['pembuat_nama'] ?: 'Belum diketahui', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></span>
             </p>
 
             <div class="flex items-center justify-between pt-4 border-t border-gray-50 mt-auto">

@@ -29,7 +29,7 @@ if (isLoggedIn()) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="<?= $root_prefix ?>assets/css/style.css">
+    <link rel="stylesheet" href="<?= $root_prefix ?>assets/css/style.css?v=<?= filemtime(__DIR__ . '/../assets/css/style.css') ?>">
     <script>
         tailwind.config = {
             theme: {
@@ -73,16 +73,26 @@ if (isLoggedIn()) {
                 <a href="<?= $root_prefix ?>pages/guru.php"
                    class="nav-link <?= $current_page == 'guru.php' ? 'nav-active' : '' ?>">👨‍🏫 Panel Guru</a>
             <?php endif; ?>
+            <?php if (strtolower((string) ($_SESSION['user_role'] ?? '')) === 'kepsek'): ?>
+                <a href="<?= $root_prefix ?>pages/kelola_guru.php"
+                   class="nav-link <?= $current_page == 'kelola_guru.php' ? 'nav-active' : '' ?>">👑 Kelola Guru</a>
+            <?php endif; ?>
         </div>
 
         <!-- Auth Buttons -->
         <div class="flex items-center gap-2">
             <?php if (isLoggedIn()): ?>
 
-                <?php if (in_array(strtolower((string) ($_SESSION['user_role'] ?? '')), ['guru', 'admin'], true)): ?>
+                <?php if (in_array(strtolower((string) ($_SESSION['user_role'] ?? '')), ['guru', 'admin', 'kepsek'], true)): ?>
+                    <?php
+                    $header_role = strtolower((string) ($_SESSION['user_role'] ?? ''));
+                    $header_role_label = $header_role === 'kepsek'
+                        ? 'Kepala Sekolah'
+                        : ($header_role === 'admin' ? 'Admin' : 'Guru');
+                    ?>
                     <div class="flex items-center gap-2 bg-gray-100 border-2 border-gray-300 rounded-full px-3 py-1">
-                        <span class="text-xl">👨‍🏫</span>
-                        <span class="text-sm font-bold text-gray-700 hidden sm:block">Admin</span>
+                        <span class="text-xl"><?= $header_role === 'kepsek' ? '👑' : '👨‍🏫' ?></span>
+                        <span class="text-sm font-bold text-gray-700 hidden sm:block"><?= $header_role_label ?></span>
                     </div>
                 <?php else: ?>
                     <!-- ⭐ AVATAR DI NAVBAR (overflow-hidden agar aman) -->
@@ -93,8 +103,17 @@ if (isLoggedIn()) {
                     </div>
                 <?php endif; ?>
 
-                <a href="<?= $root_prefix ?>pages/<?= in_array(strtolower((string) ($_SESSION['user_role'] ?? '')), ['guru', 'admin'], true) ? 'guru.php' : 'dashboard.php' ?>"
-                   class="btn-primary hidden sm:block"><?= in_array(strtolower((string) ($_SESSION['user_role'] ?? '')), ['guru', 'admin'], true) ? 'Panel Guru' : 'Dashboard' ?></a>
+                <?php
+                $header_role = strtolower((string) ($_SESSION['user_role'] ?? ''));
+                $header_dashboard = $header_role === 'kepsek'
+                    ? 'kelola_guru.php'
+                    : (in_array($header_role, ['guru', 'admin'], true) ? 'guru.php' : 'dashboard.php');
+                $header_dashboard_label = $header_role === 'kepsek'
+                    ? 'Kelola Guru'
+                    : (in_array($header_role, ['guru', 'admin'], true) ? 'Panel Guru' : 'Dashboard');
+                ?>
+                <a href="<?= $root_prefix ?>pages/<?= $header_dashboard ?>"
+                   class="btn-primary <?= $header_role === 'kepsek' ? '' : 'hidden sm:block' ?>"><?= $header_dashboard_label ?></a>
 
                 <a href="<?= $root_prefix ?>pages/profile.php"
                    class="bg-white border-2 border-gray-200 hover:bg-gray-100 hover:border-gray-300 text-xl rounded-full w-10 h-10 flex items-center justify-center transition-all shadow-sm" title="Edit Profil">⚙️</a>

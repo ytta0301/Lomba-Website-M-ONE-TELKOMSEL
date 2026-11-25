@@ -116,7 +116,13 @@ if ($db_connected && $conn) {
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <?php
-            $materis = $conn->query("SELECT * FROM materi ORDER BY urutan LIMIT 3");
+            $materis = $conn->query("
+                SELECT m.*, u.nama AS pembuat_nama
+                FROM materi m
+                LEFT JOIN users u ON u.id = m.created_by
+                ORDER BY m.urutan
+                LIMIT 3
+            ");
             $level_colors = ['Mudah'=>'bg-green-100 text-green-700','Sedang'=>'bg-yellow-100 text-yellow-700','Sulit'=>'bg-red-100 text-red-700'];
             while ($m = $materis->fetch_assoc()):
             ?>
@@ -134,6 +140,9 @@ if ($db_connected && $conn) {
                 </div>
                 <h3 class="text-lg font-black text-gray-800 mb-2"><?= htmlspecialchars($m['judul']) ?></h3>
                 <p class="text-gray-500 text-sm font-semibold"><?= htmlspecialchars($m['deskripsi']) ?></p>
+                <p class="text-xs text-gray-500 font-semibold mt-2">
+                    👩‍🏫 Dibuat oleh: <span class="font-black text-gray-700"><?= htmlspecialchars($m['pembuat_nama'] ?: 'Belum diketahui', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></span>
+                </p>
                 <div class="mt-4 flex items-center gap-2 font-bold text-sm" style="color:<?= $m['warna'] ?>">
                     <span>Mulai Belajar</span><span>→</span>
                 </div>

@@ -1,5 +1,7 @@
 <?php
-require_once '../includes/header.php'; // Mengaktifkan session_start() dari header
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
 
 // Hapus semua data session
 session_unset();
