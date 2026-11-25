@@ -7,7 +7,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 // Otomatis baca database Railway / fallback lokal
 $host = getenv('MYSQLHOST') ?: 'db.fr-roub1.bengt.wasmernet.com';
 $user = getenv('MYSQLUSER') ?: 'user_08900d0b';
-$pass = getenv('MYSQLPASSWORD') ?: '';
+$pass = getenv('MYSQLPASSWORD') ?: 'pw_51x1UKUt9rrUKTAFFIGOo2izGixbwOJ3';
 $db   = getenv('MYSQLDATABASE') ?: 'db_a8e1c5fc';
 $port = (int)(getenv('MYSQLPORT') ?: 20184);
 
