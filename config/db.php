@@ -5,11 +5,11 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 }
 
 // Otomatis baca database Railway / fallback lokal
-$host = getenv('MYSQLHOST') ?: 'localhost';
-$user = getenv('MYSQLUSER') ?: 'root';
+$host = getenv('MYSQLHOST') ?: 'db.fr-roub1.bengt.wasmernet.com';
+$user = getenv('MYSQLUSER') ?: 'user_08900d0b';
 $pass = getenv('MYSQLPASSWORD') ?: '';
-$db   = getenv('MYSQLDATABASE') ?: 'kodingkids';
-$port = (int)(getenv('MYSQLPORT') ?: 3306);
+$db   = getenv('MYSQLDATABASE') ?: 'db_a8e1c5fc';
+$port = (int)(getenv('MYSQLPORT') ?: 20184);
 
 // Cegah PHP meledak jika database belum tersambung
 mysqli_report(MYSQLI_REPORT_OFF);
