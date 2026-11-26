@@ -9,6 +9,8 @@ if (!isLoggedIn()) {
     redirect('login.php');
 }
 
+requireDatabaseConnection();
+
 $role_stmt = $conn->prepare('SELECT role FROM users WHERE id = ? LIMIT 1');
 if (!$role_stmt) {
     die('Gagal memeriksa hak akses: ' . htmlspecialchars($conn->error, ENT_QUOTES, 'UTF-8'));

@@ -9,6 +9,8 @@ if (!isLoggedIn()) {
     redirect('login.php');
 }
 
+requireDatabaseConnection();
+
 $role_stmt = $conn->prepare('SELECT role FROM users WHERE id = ? LIMIT 1');
 if (!$role_stmt) {
     throw new RuntimeException('Gagal menyiapkan pemeriksaan role: ' . $conn->error);

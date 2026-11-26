@@ -49,6 +49,14 @@ function isLoggedIn() {
     return isset($_SESSION['user_id']);
 }
 
+function requireDatabaseConnection() {
+    global $db_connected;
+    if (!$db_connected) {
+        http_response_code(503);
+        exit('Database sedang tidak tersedia. Sesi Anda tidak dihapus; silakan coba lagi beberapa saat.');
+    }
+}
+
 function redirect($url) {
     header("Location: $url");
     exit;

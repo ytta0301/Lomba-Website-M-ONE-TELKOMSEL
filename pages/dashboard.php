@@ -9,6 +9,8 @@ if (!isLoggedIn()) {
     redirect('login.php');
 }
 
+requireDatabaseConnection();
+
 $current_user_id = (int) $_SESSION['user_id'];
 $role_stmt = $conn->prepare('SELECT role FROM users WHERE id = ? LIMIT 1');
 $role_stmt->bind_param('i', $current_user_id);
