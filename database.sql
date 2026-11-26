@@ -165,56 +165,94 @@ INSERT INTO `materi` (`id`, `judul`, `deskripsi`, `level`, `durasi`, `icon`, `wa
 
 (3, 'Kenalan dengan Struktur HTML', 'Pelajari tag dasar untuk menyusun kerangka sebuah halaman web.', 'Sedang', 12, '🌐', '#FF6B6B',
 '<div class="space-y-4 text-gray-700 leading-relaxed font-medium">
-<p class="text-lg">Setiap website di internet, termasuk website KodingKids ini, dibangun menggunakan bahasa bernama <strong class="text-red-500 font-black">HTML</strong> (HyperText Markup Language).</p>
-<div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl">
-<h4 class="font-bold text-red-700 mb-1">🌐 HTML seperti Kerangka Bangunan</h4>
-<p>Jika website diibaratkan sebuah rumah, maka HTML adalah pondasi, tiang, dan dinding bata utamanya.</p>
-</div>
-<p>HTML tersusun dari potongan kode yang disebut <code class="bg-gray-100 text-red-600 px-2 py-1 rounded font-mono font-bold">Tag</code>. Kebanyakan tag memiliki pembuka dan penutup:</p>
-<ul class="list-disc pl-6 space-y-2">
-<li><code class="bg-gray-100 text-red-600 px-2 py-1 rounded font-mono font-bold">&lt;h1&gt;Judul Besar&lt;/h1&gt;</code> untuk membuat judul utama.</li>
-<li><code class="bg-gray-100 text-red-600 px-2 py-1 rounded font-mono font-bold">&lt;p&gt;Halo kawan!&lt;/p&gt;</code> untuk membuat paragraf teks.</li>
-<li><code class="bg-gray-100 text-red-600 px-2 py-1 rounded font-mono font-bold">&lt;a href="..."&gt;Tautan&lt;/a&gt;</code> untuk link ke halaman lain.</li>
-<li><code class="bg-gray-100 text-red-600 px-2 py-1 rounded font-mono font-bold">&lt;img src="..."&gt;</code> untuk menampilkan gambar keren.</li>
-</ul>
+<p class="text-lg"><strong class="text-red-500 font-black">HTML</strong> (HyperText Markup Language) adalah bahasa markup untuk menyusun struktur dan isi halaman web. Dalam perumpamaan rumah, HTML adalah kerangka dan ruangannya.</p>
+<div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl"><h4 class="font-bold text-red-700 mb-1">🌐 Dokumen HTML</h4><p>Browser membaca tag HTML lalu menampilkan teks, gambar, tautan, dan bagian halaman. HTML mengatur struktur, bukan warna atau tata letak.</p></div>
+<h3 class="font-black text-gray-800">Kerangka dasar halaman</h3>
+<pre class="bg-gray-800 text-green-300 p-4 rounded-2xl font-mono text-sm overflow-x-auto">&lt;!DOCTYPE html&gt;
+&lt;html lang="id"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Halaman Pertamaku&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Halo, dunia!&lt;/h1&gt;
+    &lt;p&gt;Aku sedang belajar HTML.&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
+<ul class="list-disc pl-6 space-y-2"><li><code>&lt;!DOCTYPE html&gt;</code> memberi tahu browser bahwa dokumen memakai HTML modern.</li><li><code>&lt;head&gt;</code> berisi informasi halaman; <code>&lt;title&gt;</code> menjadi judul di tab browser.</li><li><code>&lt;body&gt;</code> berisi konten yang terlihat oleh pengunjung.</li></ul>
+<h3 class="font-black text-gray-800">Tag untuk menyusun konten</h3>
+<ul class="list-disc pl-6 space-y-2"><li><code>&lt;h1&gt;</code> sampai <code>&lt;h6&gt;</code> membuat judul bertingkat. Gunakan sesuai urutan agar isi mudah dipahami.</li><li><code>&lt;p&gt;</code> membuat paragraf; <code>&lt;ul&gt;</code> atau <code>&lt;ol&gt;</code> membuat daftar dengan item <code>&lt;li&gt;</code>.</li><li><code>&lt;a href="..."&gt;</code> membuat tautan. Nilai <code>href</code> menunjukkan tujuan tautan.</li><li><code>&lt;img src="..." alt="..."&gt;</code> menampilkan gambar. <code>src</code> berisi lokasi gambar dan <code>alt</code> menjelaskan gambarnya.</li></ul>
+<div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-xl"><h4 class="font-bold text-yellow-800 mb-1">🧩 Tag dan atribut</h4><p>Tag biasanya memiliki tag pembuka dan penutup, misalnya <code>&lt;p&gt;Halo!&lt;/p&gt;</code>. Tag gambar dan <code>&lt;br&gt;</code> tidak memiliki tag penutup. Atribut seperti <code>class</code>, <code>href</code>, dan <code>alt</code> memberi informasi tambahan.</p></div>
+<p class="font-bold">Pilih tag sesuai arti kontennya. Struktur HTML yang rapi lebih mudah dibaca, ditata dengan CSS, dan digunakan oleh semua orang.</p>
 </div>', 3),
 
-(4, 'Warna dan Gaya dengan CSS', 'Ubah warna, ukuran, dan tata letak halaman agar indah dipandang.', 'Sedang', 14, '🎨', '#FF9F43',
+(4, 'CSS: Menata Tampilan Halaman Web', 'Atur warna, huruf, jarak, dan tata letak agar halaman nyaman dilihat.', 'Sedang', 14, '🎨', '#FF9F43',
 '<div class="space-y-4 text-gray-700 leading-relaxed font-medium">
-<p class="text-lg">Setelah rumah memiliki kerangka bata (HTML), sekarang saatnya mengecat dinding, memasang tirai cantik, dan menata perabot dengan <strong class="text-orange-500 font-black">CSS</strong> (Cascading Style Sheets)!</p>
-<div class="bg-orange-50 border-l-4 border-orange-500 p-4 rounded-r-xl">
-<h4 class="font-bold text-orange-700 mb-1">🎨 Mengapa Kita Butuh CSS?</h4>
-<p>Tanpa CSS, halaman web hanya akan terlihat putih polos dan teks hitam yang membosankan. CSS membuat website ceria dan penuh warna!</p>
-</div>
-<p>Contoh aturan sederhana CSS:</p>
-<pre class="bg-gray-800 text-yellow-300 p-4 rounded-2xl font-mono text-sm overflow-x-auto">
-p {
-    color: purple;          /* Warna teks jadi ungu */
-    font-size: 18px;        /* Ukuran huruf 18 piksel */
-    background-color: #FFF; /* Latar belakang putih */
+<p class="text-lg"><strong class="text-orange-500 font-black">CSS</strong> (Cascading Style Sheets) mengatur presentasi visual halaman: warna, huruf, jarak, dan tata letak. Jika HTML adalah kerangka rumah, CSS adalah cat dan dekorasinya.</p>
+<div class="bg-orange-50 border-l-4 border-orange-500 p-4 rounded-r-xl"><h4 class="font-bold text-orange-700 mb-1">🎨 Anatomi aturan CSS</h4><p>Selector memilih elemen. Di dalam kurung kurawal, deklarasi berisi nama properti, titik dua, nilai, dan titik koma.</p></div>
+<pre class="bg-gray-800 text-yellow-300 p-4 rounded-2xl font-mono text-sm overflow-x-auto">p {
+  color: purple;
+  font-size: 18px;
+  background-color: #FFF;
+}</pre>
+<ul class="list-disc pl-6 space-y-2"><li><strong>Selector tag</strong>, seperti <code>p</code>, memilih semua paragraf.</li><li><strong>Selector class</strong>, seperti <code>.kartu</code>, memilih elemen dengan <code>class="kartu"</code>. Class dapat dipakai berulang.</li><li><strong>Selector ID</strong>, seperti <code>#menu</code>, memilih elemen dengan <code>id="menu"</code>. ID sebaiknya unik dalam satu halaman.</li></ul>
+<h3 class="font-black text-gray-800">Jarak dan tata letak</h3>
+<p>Box Model memandang setiap elemen seperti kotak: <code>content</code> adalah isi, <code>padding</code> jarak di dalam tepi, <code>border</code> garis tepi, dan <code>margin</code> jarak di luar elemen.</p>
+<pre class="bg-gray-800 text-yellow-300 p-4 rounded-2xl font-mono text-sm overflow-x-auto">.kartu {
+  padding: 16px;
+  border: 2px solid #ddd;
+  margin: 12px;
+  border-radius: 12px;
+}</pre>
+<p>Gunakan <code>display: flex</code> untuk menyusun item dalam satu arah, misalnya berjajar atau bertumpuk. Properti seperti <code>justify-content</code> dan <code>align-items</code> membantu merapikan posisinya.</p>
+<h3 class="font-black text-gray-800">Warna, interaksi, dan layar berbeda</h3>
+<p>CSS dapat memberi warna dengan nama seperti <code>tomato</code>, kode hex seperti <code>#2563EB</code>, atau format RGB. Gunakan ukuran huruf dan kontras yang nyaman dibaca.</p>
+<pre class="bg-gray-800 text-yellow-300 p-4 rounded-2xl font-mono text-sm overflow-x-auto">button:hover {
+  background-color: #2563EB;
+  transition: background-color 0.2s;
 }
-</pre>
-<p>Dengan CSS, kita juga bisa mengatur letak tombol di tengah, memberi bayangan yang lembut, dan membuat animasi tombol membal saat disentuh kursor!</p>
+
+@media (max-width: 600px) {
+  .kartu { padding: 12px; }
+}</pre>
+<p><code>:hover</code> memberi gaya saat penunjuk berada di atas elemen. <code>transition</code> membuat perubahan terasa halus. <code>@media</code> membantu menyesuaikan tampilan untuk layar kecil.</p>
+<div class="bg-orange-50 border-l-4 border-orange-500 p-4 rounded-r-xl"><h4 class="font-bold text-orange-700 mb-1">✨ Pisahkan file CSS</h4><p>Aturan CSS bisa ditulis di atribut <code>style</code>, di tag <code>&lt;style&gt;</code>, atau di file terpisah. File eksternal seperti <code>style.css</code> membuat HTML lebih rapi dan gaya mudah dipakai ulang.</p></div>
 </div>', 4),
 
-(5, 'Interaktivitas dengan JavaScript', 'Beri kekuatan agar websitemu bisa berpikir dan merespons klik pemain!', 'Sulit', 15, '⚡', '#6BCB77',
+(5, 'JavaScript: Membuat Halaman Web Interaktif', 'Buat halaman merespons klik, memeriksa pilihan, dan memperbarui konten.', 'Sedang', 15, '⚡', '#6BCB77',
 '<div class="space-y-4 text-gray-700 leading-relaxed font-medium">
-<p class="text-lg">Kini websitemu sudah punya struktur (HTML) dan tampilan cantik (CSS). Agar website bisa bergerak aktif dan merespons pemain, kita tambahkan <strong class="text-green-600 font-black">JavaScript</strong>!</p>
-<div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-xl">
-<h4 class="font-bold text-green-700 mb-1">⚡ Otak dan Tenaga dari Website</h4>
-<p>JavaScript membuat website hidup: menghitung skor game, menampilkan pesan ucapan selamat, dan membuat kuis interaktif seperti di KodingKids!</p>
-</div>
-<p>Mari lihat contoh sederhana kode JavaScript:</p>
-<pre class="bg-gray-800 text-green-400 p-4 rounded-2xl font-mono text-sm overflow-x-auto">
-function beriSelamat() {
-    alert("Hore! Kamu berhasil menjawab kuis!");
-}
-</pre>
-<p>Ketika tombol ditekan, JavaScript akan langsung memunculkan pesan gembira kepada pengguna!</p>
-</div>', 5)
-ON DUPLICATE KEY UPDATE `judul`=VALUES(`judul`), `konten`=VALUES(`konten`);
+<p class="text-lg"><strong class="text-green-600 font-black">JavaScript</strong> membuat halaman web bisa merespons tindakan pengguna. HTML menyusun isi, CSS mengatur tampilannya, dan JavaScript menambahkan perilaku.</p>
+<div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-xl"><h4 class="font-bold text-green-700 mb-1">⚡ Perintah dijalankan oleh browser</h4><p>JavaScript dapat membaca klik, memeriksa jawaban, menghitung skor, lalu memperbarui halaman. Kode bisa ditulis pada tag <code>&lt;script&gt;</code> atau file terpisah berakhiran <code>.js</code>.</p></div>
+<h3 class="font-black text-gray-800">Menyimpan informasi</h3>
+<p>Variabel menyimpan nilai agar dapat dipakai lagi. Gunakan <code>const</code> jika nama variabel tidak akan diberi nilai baru, dan <code>let</code> jika nilainya perlu berubah.</p>
+<pre class="bg-gray-800 text-green-300 p-4 rounded-2xl font-mono text-sm overflow-x-auto">const nama = "Dina";
+let skor = 0;
+skor = skor + 10;
+console.log(nama, skor);</pre>
+<p>Teks ditulis dengan tanda kutip, angka dapat dipakai untuk hitungan, dan nilai benar/salah disebut boolean. <code>console.log()</code> membantu melihat nilai saat belajar.</p>
+<h3 class="font-black text-gray-800">Membuat halaman merespons</h3>
+<p>DOM adalah cara JavaScript mengenali elemen HTML. Pilih elemen dengan <code>document.querySelector()</code>, lalu ubah teks melalui <code>textContent</code>.</p>
+<pre class="bg-gray-800 text-green-300 p-4 rounded-2xl font-mono text-sm overflow-x-auto">&lt;button id="tombol"&gt;Klik aku&lt;/button&gt;
+&lt;p id="pesan"&gt;Halo!&lt;/p&gt;
 
--- Soal Kuis (20 Soal: 4 Soal per Materi)
+const tombol = document.querySelector("#tombol");
+const pesan = document.querySelector("#pesan");
+
+tombol.addEventListener("click", function () {
+  pesan.textContent = "Kamu berhasil!";
+});</pre>
+<p><code>addEventListener("click", ...)</code> menjalankan fungsi saat tombol diklik. Fungsi adalah kumpulan perintah yang bisa dipanggil saat dibutuhkan.</p>
+<h3 class="font-black text-gray-800">Mengambil keputusan</h3>
+<pre class="bg-gray-800 text-green-300 p-4 rounded-2xl font-mono text-sm overflow-x-auto">if (skor &gt;= 10) {
+  console.log("Hebat!");
+} else {
+  console.log("Coba lagi!");
+}</pre>
+<p><code>if</code> dan <code>else</code> memilih perintah berdasarkan kondisi. Susun langkahnya dengan teliti, lalu uji dengan menekan tombol dan melihat hasilnya.</p>
+</div>', 5)
+ON DUPLICATE KEY UPDATE `judul`=VALUES(`judul`), `deskripsi`=VALUES(`deskripsi`), `level`=VALUES(`level`), `durasi`=VALUES(`durasi`), `icon`=VALUES(`icon`), `warna`=VALUES(`warna`), `konten`=VALUES(`konten`), `urutan`=VALUES(`urutan`);
+
+-- Soal Kuis (38 soal: 4 soal pengantar dan 10 soal untuk masing-masing HTML, CSS, dan JavaScript)
 INSERT INTO `kuis` (`id`, `materi_id`, `pertanyaan`, `pilihan_a`, `pilihan_b`, `pilihan_c`, `pilihan_d`, `jawaban_benar`) VALUES
 -- Kuis Materi 1
 (1, 1, 'Apa yang dimaksud dengan coding?', 'Memberi instruksi kepada komputer', 'Menggambar di atas kertas', 'Memperbaiki kipas angin', 'Menonton video kartun', 'a'),
@@ -230,22 +268,40 @@ INSERT INTO `kuis` (`id`, `materi_id`, `pertanyaan`, `pilihan_a`, `pilihan_b`, `
 
 -- Kuis Materi 3
 (9, 3, 'Bahasa apa yang digunakan untuk menyusun kerangka halaman web?', 'HTML', 'Kamera', 'Speaker', 'Proyektor', 'a'),
-(10, 3, 'Tag HTML manakah yang dipakai untuk membuat judul besar?', '<h1>', '<p>', '<img>', '<br>', 'a'),
-(11, 3, 'Tag HTML manakah yang digunakan untuk membuat sebuah paragraf teks?', '<p>', '<link>', '<head>', '<title>', 'a'),
-(12, 3, 'Tag HTML yang digunakan untuk menampilkan gambar adalah...', '<img>', '<foto>', '<suara>', '<warna>', 'a'),
+(10, 3, 'Deklarasi apa yang diletakkan di awal dokumen HTML modern?', '<!DOCTYPE html>', '<html-end>', '<start-page>', '<browser>', 'a'),
+(11, 3, 'Bagian mana yang berisi konten yang terlihat di halaman?', '<head>', '<body>', '<title>', '<meta>', 'b'),
+(12, 3, 'Tag manakah yang digunakan untuk membuat judul utama?', '<h1>', '<p>', '<img>', '<br>', 'a'),
+(13, 3, 'Tag manakah yang digunakan untuk membuat paragraf?', '<p>', '<link>', '<head>', '<title>', 'a'),
+(14, 3, 'Pasangan tag manakah yang membuat daftar tanpa nomor?', '<ol> dan <li>', '<ul> dan <li>', '<p> dan <h1>', '<a> dan <img>', 'b'),
+(15, 3, 'Atribut apa yang menentukan tujuan sebuah tautan?', 'src', 'alt', 'href', 'class', 'c'),
+(16, 3, 'Atribut apa yang memberi deskripsi teks pada gambar?', 'href', 'alt', 'id', 'style', 'b'),
+(17, 3, 'Tag manakah yang menampilkan gambar dan tidak memerlukan tag penutup?', '<img>', '<p>', '<h1>', '<body>', 'a'),
+(18, 3, 'Atribut apa yang cocok untuk memberi nama kelompok gaya CSS pada elemen?', 'class', 'href', 'src', 'alt', 'a'),
 
 -- Kuis Materi 4
-(13, 4, 'Apa fungsi utama CSS pada pembuatan website?', 'Mengatur tampilan, warna, dan gaya halaman', 'Mematikan komputer secara otomatis', 'Mengirim email rahasia', 'Memperbaiki kabel listrik', 'a'),
-(14, 4, 'Properti CSS manakah yang digunakan untuk mengganti warna teks?', 'color', 'background-audio', 'speed', 'jump', 'a'),
-(15, 4, 'Jika HTML diibaratkan kerangka rumah, maka CSS diibaratkan sebagai...', 'Cat dinding dan dekorasi rumah', 'Kunci pintu gudang', 'Tanah tempat rumah berdiri', 'Mobil di garasi', 'a'),
-(16, 4, 'Properti CSS untuk mengubah ukuran huruf teks adalah...', 'font-size', 'text-volume', 'screen-zoom', 'big-letters', 'a'),
+(19, 4, 'Apa fungsi utama CSS pada pembuatan website?', 'Mengatur tampilan, warna, dan gaya halaman', 'Mematikan komputer secara otomatis', 'Mengirim email rahasia', 'Memperbaiki kabel listrik', 'a'),
+(20, 4, 'Properti CSS manakah yang digunakan untuk mengganti warna teks?', 'color', 'background-audio', 'speed', 'jump', 'a'),
+(21, 4, 'Aturan CSS apa yang membantu menyesuaikan tampilan untuk layar kecil?', '@media', '@picture', '@click', '@html', 'a'),
+(22, 4, 'Properti CSS untuk mengubah ukuran huruf teks adalah...', 'font-size', 'text-volume', 'screen-zoom', 'big-letters', 'a'),
+(23, 4, 'Selector CSS apakah yang memilih elemen dengan class="kartu"?', '.kartu', '#kartu', 'kartu()', '@kartu', 'a'),
+(24, 4, 'Selector CSS apakah yang memilih elemen dengan id="menu"?', '.menu', '#menu', 'menu()', '*menu', 'b'),
+(25, 4, 'Bagian Box Model yang memberi jarak di antara isi dan border adalah...', 'margin', 'padding', 'outline', 'font-size', 'b'),
+(26, 4, 'Bagian Box Model yang memberi jarak di luar border elemen adalah...', 'padding', 'content', 'margin', 'color', 'c'),
+(27, 4, 'Nilai display apa yang membantu menyusun item dalam satu arah?', 'display: flex', 'display: sound', 'display: paint', 'display: jump', 'a'),
+(28, 4, 'Pseudo-class apa yang dapat memberi gaya saat penunjuk berada di atas tombol?', ':hover', ':color', ':click-now', ':font', 'a'),
 
 -- Kuis Materi 5
-(17, 5, 'Bahasa pemrograman web yang berfungsi membuat website interaktif dan hidup adalah...', 'JavaScript', 'Photoshop', 'Microwave', 'Printer', 'a'),
-(18, 5, 'Perintah JavaScript apa yang sering dipakai memunculkan kotak pesan di layar?', 'alert()', 'stop()', 'shutDown()', 'color()', 'a'),
-(19, 5, 'Apa yang terjadi saat kita menekan tombol kuis di website?', 'JavaScript memeriksa jawaban dan menghitung skor', 'Komputer langsung mati', 'Kertas keluar dari printer', 'Layar berubah jadi hitam', 'a'),
-(20, 5, 'Gabungan 3 bahasa utama dalam membuat website modern adalah...', 'HTML, CSS, dan JavaScript', 'Word, Excel, dan PowerPoint', 'Monitor, Mouse, dan CPU', 'Paint, Kalkulator, dan Notepad', 'a')
-ON DUPLICATE KEY UPDATE `pertanyaan`=VALUES(`pertanyaan`);
+(29, 5, 'Blok perintah untuk membuat keputusan berdasarkan kondisi menggunakan...', 'if dan else', 'h1 dan p', 'src dan alt', 'margin dan padding', 'a'),
+(30, 5, 'Apa yang dimaksud dengan fungsi dalam JavaScript?', 'Kumpulan perintah yang dapat dipanggil saat dibutuhkan', 'Warna latar halaman', 'Tag untuk menampilkan gambar', 'Nama lain untuk file CSS', 'a'),
+(31, 5, 'Bahasa pemrograman web yang berfungsi membuat website interaktif adalah...', 'JavaScript', 'Photoshop', 'Microwave', 'Printer', 'a'),
+(32, 5, 'Perintah JavaScript apa yang dapat memunculkan kotak pesan?', 'alert()', 'stop()', 'shutDown()', 'color()', 'a'),
+(33, 5, 'Kata kunci yang cocok untuk nilai yang tidak akan diberi nilai baru adalah...', 'const', 'change', 'repeat', 'style', 'a'),
+(34, 5, 'Kata kunci yang cocok untuk variabel yang nilainya dapat berubah adalah...', 'const', 'let', 'href', 'class', 'b'),
+(35, 5, 'Perintah JavaScript yang menampilkan pesan di console adalah...', 'console.log()', 'page.color()', 'html.show()', 'css.print()', 'a'),
+(36, 5, 'Perintah apa yang memilih elemen berdasarkan selector CSS?', 'document.querySelector()', 'document.paint()', 'window.makeHTML()', 'style.getColor()', 'a'),
+(37, 5, 'Method apa yang digunakan untuk menjalankan fungsi saat tombol diklik?', 'addEventListener("click", ...)', 'addColor("click", ...)', 'makePage("click", ...)', 'setFont("click", ...)', 'a'),
+(38, 5, 'Pasangan tugas yang benar untuk HTML, CSS, dan JavaScript adalah...', 'HTML struktur, CSS tampilan, JavaScript interaksi', 'HTML warna, CSS data, JavaScript kerangka', 'HTML suara, CSS gambar, JavaScript kabel', 'HTML tombol, CSS komputer, JavaScript monitor', 'a')
+ON DUPLICATE KEY UPDATE `materi_id`=VALUES(`materi_id`), `pertanyaan`=VALUES(`pertanyaan`), `pilihan_a`=VALUES(`pilihan_a`), `pilihan_b`=VALUES(`pilihan_b`), `pilihan_c`=VALUES(`pilihan_c`), `pilihan_d`=VALUES(`pilihan_d`), `jawaban_benar`=VALUES(`jawaban_benar`);
 
 -- Toko Poin (toko_items)
 INSERT INTO `toko_items` (`id`, `nama`, `deskripsi`, `kategori`, `harga`, `icon`, `nilai`) VALUES
